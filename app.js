@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var monk = require('monk');
+var mongoskin = require('mongoskin');
 
 
 var routes = require('./routes/index');
@@ -17,6 +17,7 @@ var app = express();
 
 mongoose.connect('mongodb://localhost:27017/meandb');
 var db = mongoose.connection;
+var dbrest = mongoskin.db('mongodb://localhost:27017/meandb2', { native_parser: true });;
 
 db.on('error', function (err) {
     console.log('error', err);
@@ -24,6 +25,10 @@ db.on('error', function (err) {
 
 db.on('open', function () {
     console.log('connection open');
+});
+
+dbrest.on('open', function () {
+    console.log('connection open-dbrest');
 });
 
 // view engine setup
@@ -40,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
     req.db = db;
+    req.dbrest = dbrest;
     next();
 });
 
