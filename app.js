@@ -6,6 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var mongoskin = require('mongoskin');
+var session = require("express-session");
+var passport = require("passport");
+var localStrategy = require("passport-local");
+var googleStrategy = require("passport-google");
+var twitterStrategy = require("passport-twitter");
+var facebookStrategy = require("passport-facebook");
 
 
 var routes = require('./routes/index');
@@ -41,6 +47,29 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'meanapp' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(function(req,res,next){
+
+    console.log(req.session);
+    var error = req.session.error,
+        msg = req.session.notice,
+        success = req.session.success;
+
+    delete req.session.error;
+    delete req.session.notice;
+    delete req.session.success;
+
+    if (error) res.locals.error = error;
+    if (msg) res.locals.notice = msg;
+    if (success) res.locals.success = success;
+
+    next();
+
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	if user
+		.jumbotron
+			h1 Orchestrate user Login
+			p	Below is your profile information
+
+		.panel.panel-default
+			.panel-heading
+				h3.panel-title Profile Information
+			.panel-body
+				p Username: #{user.username}
+				p Avatar: 
+					img(src="#{user.avatar}")
+	else
+		.jumbotron
+			h1 Orchestrate user Login
+			p	Sign in to view your profile
+			p
+				a.btn.btn-primary.btn-lg(role="button",href="/login")
+					span.glyphicon.glyphicon-user	Sign in!		

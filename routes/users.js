@@ -15,4 +15,18 @@ router.get('/userlist', function (req, res) {
     });
 });
 
+router.post('/adduser', function (req, res) {
+    var db = req.dbrest;
+    db.collection('userlist').insert(req.body,function (e, doc) {
+        res.send((e === null) ? { msg: '' } : { msg: e });
+    });
+});
+
+router.delete('/deleteuser/:userid', function (req, res) {
+    var db = req.dbrest;
+    db.collection('userlist').removeById(req.params.userid, function (e, result) {
+        res.send((result === 1) ? { msg: '' } : { msg: e });
+    });
+});
+
 module.exports = router;

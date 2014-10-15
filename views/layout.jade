@@ -3,7 +3,46 @@ html
 	head
 		title= title
 		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
 	body
-		block content
+		.container
+			nav.navbar.navbar-default(role="navigation")
+				.container-fluid
+					.navbar-header
+						button.navbar-toggle(type="button",data-toggle="collapse", data-target="#bs-example-navbar-collapse-1")
+							span.sr-only Toggle Navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						span.navbar-brand Mean App
+					#bs-example-navbar-collapse-1.collapse.navbar-collapse
+						if user
+							ul.nav.navbar-nav
+								li
+									p.navbar-text
+										strong Hi,
+										img(width="20",height="20",src="#{user.avatar}")
+										#{user.username}
+						ul.nav.navbar-nav.navbar-right
+							if user
+								li
+									a(href="/logout")
+										| Log Out
+							else
+								li
+									a(href="/signin")
+										| Sign In
+			if error
+				p.alert.alert-warning
+					#{error}
+			if success
+				p.alert.alert-success
+					#{success}
+			if notice
+				p.alert.alert-info
+					#{notice}
+		
+			block content
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
 		script(src="/javascripts/global.js")
